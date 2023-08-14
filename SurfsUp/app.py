@@ -32,7 +32,10 @@ station = Base.classes.station
 # Flask Setup
 #################################################
 
+session = Session(engine)
 app = Flask(__name__)
+
+app.run()
 
 #################################################
 # Flask Routes
@@ -53,10 +56,6 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation(): 
-# Create a session (link) from Python to the DB
-    session = Session(engine)
-
-
 
 # Return a list of the total of the daily precipitation for specified time
 
@@ -77,10 +76,11 @@ def precipitation():
     for date, dailytotal in precipitation:
         precipitation_dates.append(date)
         precipitation_totals.append(dailytotal)
-
-    precipitation_dict = dict(zip(precipitation_dates, precipitation_totals))
-
+        precipitation_dict = dict(zip(precipitation_dates, precipitation_totals))
+    
     return jsonify(precipitation_dict)
+
+
 
 # Do the same for stations
 
